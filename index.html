@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phebe Travel – Premium Flight Booking & Travel Consultancy</title>
+  <meta name="description" content="Book flights, get visa assistance, and plan your perfect journey with Phebe Consultancy & Educational Management Services.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { 
+        extend: { 
+          colors: { 
+            navy: '#0F4C81', 
+            'navy-dark': '#0a3057', 
+            gold: '#ffff' 
+          }, 
+          fontFamily: { 
+            poppins: ['Poppins','sans-serif'], 
+            inter: ['Inter','sans-serif'] 
+          } 
+        } 
+      }
+    }
+  </script>
+  <style>
+    /* ── Slideshow ── */
+    .hero-slider {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    /* Ken-Burns zoom on active slide */
+    .slide.active {
+      animation: kenBurns 7s ease-in-out forwards;
+    }
+
+    @keyframes kenBurns {
+      0%   { transform: scale(1);    }
+      100% { transform: scale(1.08); }
+    }
+
+    /* Dot indicators */
+    .slide-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      border: none;
+    }
+    .slide-dot.active {
+      background: #fff;
+      transform: scale(1.3);
+    }
+
+    /* Arrow buttons */
+    .slide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slide-arrow:hover { background: rgba(255,255,255,0.28); }
+    .slide-arrow.prev { left: 20px; }
+    .slide-arrow.next { right: 20px; }
+
+    /* Progress bar */
+    .slide-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.6);
+      z-index: 30;
+      animation: none;
+    }
+    .slide-progress.running {
+      animation: progress 6s linear forwards;
+    }
+    @keyframes progress {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+
+    /* Existing styles preserved */
+    @keyframes plane-fly {
+      0%   { transform: translateX(-100px) translateY(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateX(calc(100vw + 100px)) translateY(-50px); opacity: 0; }
+    }
+    .plane-fly { animation: plane-fly 15s linear infinite; }
+
+    .glass {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .section-py { padding: 80px 0; }
+    .bg-light { background-color: #f8f9fa; }
+    .text-dark { color: #1a202c; }
+    .reveal { opacity: 1; }
+    .reveal-delay-1 { animation-delay: 0.1s; }
+    .reveal-delay-2 { animation-delay: 0.2s; }
+    .reveal-delay-3 { animation-delay: 0.3s; }
+    .reveal-delay-4 { animation-delay: 0.4s; }
+    .card-hover { transition: all 0.3s ease; }
+    .badge { display:inline-block; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:600; letter-spacing:0.5px; }
+    .badge-navy { background:#0F4C81; color:white; }
+    .btn-navy { background:#0F4C81; color:white; padding:16px 32px; border-radius:50px; display:inline-block; font-weight:600; transition:all 0.3s ease; }
+    .btn-navy:hover { background:#0a3057; transform:translateY(-2px); }
+    .airline-logo { transition:all 0.3s ease; opacity:0.7; }
+    .airline-logo:hover { opacity:1; transform:scale(1.1); }
+    .stars { font-size:18px; letter-spacing:2px; }
+  </style>
+</head>
+<body>
+  <div id="main-nav"></div>
+
+  <!-- ── HERO SECTION ── -->
+  <section class="relative min-h-screen flex items-center overflow-hidden" style="min-height:100vh; background-color:#0a3057;">
+
+    <!-- Slideshow -->
+    <div class="hero-slider">
+      <div class="slide active" style="background-image: url('./s1.jpeg');"></div>
+      <div class="slide"        style="background-image: url('./s2.jpeg');"></div>
+      <div class="slide"        style="background-image: url('./s3.jpeg');"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="slide-progress running" id="slideProgress"></div>
+
+    <!-- Gradient Overlay -->
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,48,87,0.62) 0%,rgba(15,76,129,0.48) 50%,rgba(26,107,181,0.55) 100%);z-index:10;pointer-events:none;"></div>
+
+    <!-- Animated BG Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" style="z-index:15;">
+      <div class="absolute top-20 left-10 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-300/5 rounded-full blur-3xl animate-pulse" style="animation-delay:1s"></div>
+      <div class="absolute inset-0" style="background-image:radial-gradient(circle,rgba(244,180,0,0.06) 1px,transparent 1px);background-size:40px 40px;"></div>
+      <div class="absolute top-1/3 left-0 plane-fly" style="animation-delay:2s;">
+        <svg class="w-12 h-12 text-white/10" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Arrow: Prev -->
+    <button class="slide-arrow prev" onclick="moveSlide(-1)" aria-label="Previous slide">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
+    <!-- Arrow: Next -->
+    <button class="slide-arrow next" onclick="moveSlide(1)" aria-label="Next slide">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <!-- Main Content -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20" style="z-index:20;">
+      <div class="text-center mb-14">
+        <h1 class="text-5xl md:text-7xl font-poppins font-black text-white leading-tight mb-6">
+          Study Abroad<br>
+          <span class="text-white">With Confidence</span>
+        </h1>
+        <p class="text-white/70 font-inter text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          Your Trusted Overseas Education &amp; Visa Consultant
+        </p>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 max-w-3xl mx-auto">
+        <div class="text-center">
+          <div class="text-white font-bold text-3xl">5,000+</div>
+          <p class="text-white/50 font-inter text-xs mt-1">Happy Travelers</p>
+        </div>
+        <div class="text-center">
+          <div class="text-white font-bold text-3xl">120+</div>
+          <p class="text-white/50 font-inter text-xs mt-1">Destinations</p>
+        </div>
+        <div class="text-center">
+          <div class="text-white font-bold text-3xl">50+</div>
+          <p class="text-white/50 font-inter text-xs mt-1">Airlines</p>
+        </div>
+        <div class="text-center">
+          <div class="text-white font-bold text-3xl">98%</div>
+          <p class="text-white/50 font-inter text-xs mt-1">Satisfaction Rate</p>
+        </div>
+      </div>
+
+      <!-- Dot Indicators -->
+      <div class="flex justify-center gap-3 mt-10" id="slideDots" style="z-index:30; position:relative;">
+        <button class="slide-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+        <button class="slide-dot"        onclick="goToSlide(1)" aria-label="Slide 2"></button>
+        <button class="slide-dot"        onclick="goToSlide(2)" aria-label="Slide 3"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section-py bg-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <h2 class="text-4xl md:text-5xl font-poppins font-bold text-dark mb-4">What We Have to Offer</h2>
+        <p class="text-slate-500 font-inter text-lg max-w-2xl mx-auto">We have a range of VISA overseas services.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="reveal reveal-delay-1 card-hover bg-white rounded-2xl p-8 border border-slate-100 shadow-sm group hover:bg-blue-300">
+          <h3 class="font-poppins font-bold text-xl text-dark mb-3">University Admission Processing</h3>
+          <p class="font-inter text-slate-500 text-sm leading-relaxed mb-4">Get assistance with university applications, admission requirements, and offer letters.</p>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover bg-white rounded-2xl p-8 border border-slate-100 shadow-sm group hover:bg-blue-300">
+          <h3 class="font-poppins font-bold text-xl text-dark mb-3">Student Visa Services</h3>
+          <p class="font-inter text-slate-500 text-sm leading-relaxed mb-4">Complete visa application support including documentation, interview preparation, and tracking.</p>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover bg-white rounded-2xl p-8 border border-slate-100 shadow-sm group hover:bg-blue-300">
+          <h3 class="font-poppins font-bold text-xl text-dark mb-3">Education & Career Counseling</h3>
+          <p class="font-inter text-slate-500 text-sm leading-relaxed mb-4">Personalized guidance to help students select the right program and study destination.</p>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover bg-white rounded-2xl p-8 border border-slate-100 shadow-sm group hover:bg-blue-300">
+          <h3 class="font-poppins font-bold text-xl text-dark mb-3">SOP & Personal Statement Assistance</h3>
+          <p class="font-inter text-slate-500 text-sm leading-relaxed mb-4">Professional support for writing compelling Statements of Purpose and application essays.</p>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover bg-white rounded-2xl p-8 border border-slate-100 shadow-sm group hover:bg-blue-300">
+          <h3 class="font-poppins font-bold text-xl text-dark mb-3">CV & Resume Enhancement</h3>
+          <p class="font-inter text-slate-500 text-sm leading-relaxed mb-4">Academic and professional resume optimization for university applications.</p>
+        </div>
+        <div class="reveal reveal-delay-1 card-hover bg-white rounded-2xl p-8 border border-slate-100 shadow-sm group hover:bg-blue-300">
+          <h3 class="font-poppins font-bold text-xl text-dark mb-3">IELTS Registration & Guidance</h3>
+          <p class="font-inter text-slate-500 text-sm leading-relaxed mb-4">Support with IELTS registration and preparation resources.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED DESTINATIONS -->
+  <section class="section-py bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 reveal">
+        <div>
+          <h2 class="text-4xl md:text-3xl font-poppins font-bold text-dark">Trusted Study Destination</h2>
+        </div>
+        <a href="destinations.html" class="mt-4 md:mt-0 text-navy font-inter font-semibold hover:text-gold transition-all flex items-center gap-2">View All Destinations →</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="reveal reveal-delay-1 card-hover rounded-3xl overflow-hidden relative h-80 group cursor-pointer" onclick="window.location='austrialia.html'">
+          <div class="absolute inset-0" style="background:linear-gradient(135deg,#1a4480 0%,#2563eb 50%,#7c3aed 100%);"></div>
+          <img src="https://tse4.mm.bing.net/th/id/OIP.DAfXRv1a228A3Y3vnt7quQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Study in Australia" class="absolute inset-0 w-full h-full object-cover opacity-80">
+          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 60%);"></div>
+          <div class="absolute inset-0 flex items-end p-6">
+            <div><h3 class="text-white font-poppins font-bold text-2xl">Study in Australia</h3><p class="text-white/70 font-inter text-sm">Australia is home to some of the finest research institutions in the world. Read more</p></div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2 card-hover rounded-3xl overflow-hidden relative h-80 group cursor-pointer" onclick="window.location='canada.html'">
+          <div class="absolute inset-0" style="background:linear-gradient(135deg,#dc2626 0%,#ea580c 50%,#d97706 100%);"></div>
+          <img src="https://tse4.mm.bing.net/th/id/OIP.a60iZkm0AyAdSUyHcp32agHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Study in Canada" class="absolute inset-0 w-full h-full object-cover opacity-80">
+          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 60%);"></div>
+          <div class="absolute inset-0 flex items-end p-6">
+            <div><h3 class="text-white font-poppins font-bold text-2xl">Study in Canada</h3><p class="text-white/70 font-inter text-sm">For decades, international students have moved to study abroad in Canada for higher education. Read more</p></div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-3 card-hover rounded-3xl overflow-hidden relative h-80 group cursor-pointer" onclick="window.location='usa.html'">
+          <div class="absolute inset-0" style="background:linear-gradient(135deg,#065f46 0%,#059669 50%,#10b981 100%);"></div>
+          <img src="https://tse3.mm.bing.net/th/id/OIP.Vwp9AbV6vprWheWz5q3ibwHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Study in USA" class="absolute inset-0 w-full h-full object-cover opacity-80">
+          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 60%);"></div>
+          <div class="absolute inset-0 flex items-end p-6">
+            <div><h3 class="text-white font-poppins font-bold text-2xl">Study In USA</h3><p class="text-white/70 font-inter text-sm">The top universities provide highly accredited professors, advanced technology and research facilities.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDENT JOURNEY -->
+  <section class="section-py" style="background:linear-gradient(135deg,#0a3057 0%,#0F4C81 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <h2 class="text-4xl md:text-5xl font-poppins font-bold text-white mb-4">Student Journey</h2>
+        <p class="text-white/60 font-inter text-lg max-w-2xl mx-auto">Your Study Abroad Process</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="reveal reveal-delay-1 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">1. Book a Free Consultation</h3></div>
+        <div class="reveal reveal-delay-2 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">2. Course & University Selection</h3></div>
+        <div class="reveal reveal-delay-3 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">3. Application Submission</h3></div>
+        <div class="reveal reveal-delay-4 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">4. Admission Offer</h3></div>
+        <div class="reveal reveal-delay-4 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">5. Visa Processing</h3></div>
+        <div class="reveal reveal-delay-4 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">6. Travel & Accommodation Support</h3></div>
+        <div class="reveal reveal-delay-4 glass rounded-2xl p-6 text-center"><h3 class="font-poppins font-bold text-white text-lg mb-2">7. Start Your Academic Journey</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section-py bg-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 reveal">
+        <span class="badge badge-navy mb-4">Testimonials</span>
+        <h2 class="text-4xl md:text-5xl font-poppins font-bold text-dark">What Travelers Say</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="reveal reveal-delay-1 bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+          <div class="stars mb-4">★★★★★</div>
+          <p class="font-inter text-slate-600 text-sm leading-relaxed mb-6">"Phebe got me the best deal to London I've ever seen. Their visa team handled everything perfectly. I'll never book with anyone else again!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white font-poppins font-bold">A</div>
+            <div><div class="font-poppins font-semibold text-dark text-sm">Adaeze Okonkwo</div><div class="text-slate-400 font-inter text-xs">Lagos, Nigeria</div></div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2 bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+          <div class="stars mb-4">★★★★★</div>
+          <p class="font-inter text-slate-600 text-sm leading-relaxed mb-6">"As a student heading to Canada for university, I was stressed about everything. Phebe made the entire process so smooth — from my visa to my flight!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-navy-dark font-poppins font-bold">E</div>
+            <div><div class="font-poppins font-semibold text-dark text-sm">Emeka Chukwudi</div><div class="text-slate-400 font-inter text-xs">Abuja, Nigeria</div></div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-3 bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+          <div class="stars mb-4">★★★★★</div>
+          <p class="font-inter text-slate-600 text-sm leading-relaxed mb-6">"Our company uses Phebe for all corporate travel. The team is professional, fast, and always gets us the best rates. Highly recommended for businesses!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-poppins font-bold">F</div>
+            <div><div class="font-poppins font-semibold text-dark text-sm">Funmilayo Adeleke</div><div class="text-slate-400 font-inter text-xs">Port Harcourt, Nigeria</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AIRLINE PARTNERS -->
+  <section class="py-16 bg-white border-y border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-slate-400 font-inter text-sm uppercase tracking-widest mb-10 reveal">Trusted Airline Partners</p>
+      <div class="flex flex-wrap items-center justify-center gap-12 reveal">
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">EMIRATES</div>
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">LUFTHANSA</div>
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">QATAR</div>
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">AIR FRANCE</div>
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">BRITISH</div>
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">ETHIOPIAN</div>
+        <div class="airline-logo font-poppins font-black text-navy text-xl tracking-tight">KENYA AIR</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-py bg-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#0F4C81 1px,transparent 1px);background-size:30px 30px;"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <h2 class="text-4xl md:text-5xl font-poppins font-black text-navy-dark mb-4">Ready to Study Abroad?</h2>
+      <p class="text-navy-dark/70 font-inter text-lg mb-4 max-w-2xl mx-auto">Take the first step toward your international education journey today.</p>
+      <p class="text-navy-dark/70 font-inter text-lg mb-8 max-w-2xl mx-auto">Book a consultation with our experienced education consultants and discover the best opportunities for your future.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="booking.html" class="btn-navy text-base font-inter">Book Consultation</a>
+        <a href="contact.html" class="bg-transparent border-2 border-navy-dark text-navy-dark font-semibold font-inter px-8 py-4 rounded-full hover:bg-navy-dark hover:text-white transition-all">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <div id="main-footer"></div>
+  <script src="nav.js"></script>
+
+  <script>
+    /* ── Slideshow Logic ── */
+    const slides   = document.querySelectorAll('.slide');
+    const dots     = document.querySelectorAll('.slide-dot');
+    const progress = document.getElementById('slideProgress');
+    let current    = 0;
+    let timer      = null;
+
+    function showSlide(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+
+      // Reset progress bar
+      progress.classList.remove('running');
+      void progress.offsetWidth; // reflow to restart animation
+      progress.classList.add('running');
+    }
+
+    function moveSlide(dir) {
+      clearInterval(timer);
+      showSlide(current + dir);
+      startAuto();
+    }
+
+    function goToSlide(index) {
+      clearInterval(timer);
+      showSlide(index);
+      startAuto();
+    }
+
+    function startAuto() {
+      timer = setInterval(() => showSlide(current + 1), 6000);
+    }
+
+    // Kick off
+    startAuto();
+
+    // Pause on hover
+    document.querySelector('.hero-slider').addEventListener('mouseenter', () => clearInterval(timer));
+    document.querySelector('.hero-slider').addEventListener('mouseleave', startAuto);
+
+    // Swipe support for mobile
+    let touchStartX = 0;
+    document.querySelector('section').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+    document.querySelector('section').addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) moveSlide(diff > 0 ? 1 : -1);
+    });
+  </script>
+</body>
+</html>
