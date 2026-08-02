@@ -164,10 +164,10 @@ function renderFooter() {
         <div>
           <h4 class="text-white font-semibold font-poppins mb-5 text-sm uppercase tracking-wider">Our Services</h4>
           <ul class="space-y-3">
-            <li><a href="flights.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Flight Booking</a></li>
-            <li><a href="consultation.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Travel Consultation</a></li>
-            <li><a href="visa.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Visa Assistance</a></li>
-            <li><a href="packages.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Travel Packages</a></li>
+            <li><a href="flights.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Study Abrroad</a></li>
+            <li><a href="consultation.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Travel Packages</a></li>
+            <li><a href="visa.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Travel Consultation</a></li>
+            <li><a href="packages.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Visa Assisance</a></li>
             <li><a href="destinations.html" class="text-white/50 hover:text-gold font-inter text-sm transition-all">Study Abroad</a></li>
           </ul>
         </div>
@@ -190,7 +190,7 @@ function renderFooter() {
           <h4 class="text-white font-semibold font-poppins mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div class="space-y-4">
             <div class="flex items-start gap-3">
-              <span class="text-white/50 font-inter text-sm">18, Pipeline Road, Ajagbole, Ogun State, Nigeria</span>
+              <span class="text-white/50 font-inter text-sm">25, Alagbado Akute Road, Baba Dada, Busstop, Ojodu Berger, Lagos</span>
             </div>
             <div class="flex items-center gap-3">
               <a href="tel:+2349016520888" class="text-white/50 hover:text-gold font-inter text-sm transition-all">+234 901 652 0888</a>
