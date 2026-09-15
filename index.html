@@ -151,9 +151,9 @@
 
     <!-- Slideshow -->
     <div class="hero-slider">
-      <div class="slide active" style="background-image: url('./s1.jpeg');"></div>
-      <div class="slide"        style="background-image: url('./s3.jpeg');"></div>
-      <div class="slide"        style="background-image: url('./s5.jpeg');"></div>
+      <div class="slide active" style="background-image: url('./s1.jpeg');" data-title="Study Abroad<br>With Confidence" data-subtitle="Your Trusted Overseas Education &amp; Visa Consultant"></div>
+      <div class="slide"        style="background-image: url('./s3.jpeg');" data-title="Fly Further<br>Dream Bigger" data-subtitle="Seamless Flight Bookings to 120+ Destinations Worldwide"></div>
+      <div class="slide"        style="background-image: url('./s5.jpeg');" data-title="Your Visa Journey<br>Simplified" data-subtitle="Expert Visa Guidance From Application to Approval"></div>
     </div>
 
     <!-- Progress bar -->
@@ -187,11 +187,11 @@
     <!-- Main Content -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20" style="z-index:20;">
       <div class="text-center mb-14">
-        <h1 class="text-5xl md:text-7xl font-poppins font-black text-white leading-tight mb-6">
+        <h1 id="heroTitle" class="text-5xl md:text-7xl font-poppins font-black text-white leading-tight mb-6" style="transition: opacity 0.5s ease;">
           Study Abroad<br>
           <span class="text-white">With Confidence</span>
         </h1>
-        <p class="text-white/70 font-inter text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+        <p id="heroSubtitle" class="text-white/70 font-inter text-lg md:text-xl max-w-2xl mx-auto leading-relaxed" style="transition: opacity 0.5s ease;">
           Your Trusted Overseas Education &amp; Visa Consultant
         </p>
       </div>
@@ -224,7 +224,6 @@
       </div>
     </div>
   </section>
-
   <!-- SERVICES -->
   <section class="section-py bg-light">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -426,11 +425,31 @@
 
   <script>
     /* ── Slideshow Logic ── */
-    const slides   = document.querySelectorAll('.slide');
-    const dots     = document.querySelectorAll('.slide-dot');
-    const progress = document.getElementById('slideProgress');
+    const slides       = document.querySelectorAll('.slide');
+    const dots         = document.querySelectorAll('.slide-dot');
+    const progress     = document.getElementById('slideProgress');
+    const heroTitle    = document.getElementById('heroTitle');
+    const heroSubtitle = document.getElementById('heroSubtitle');
     let current    = 0;
     let timer      = null;
+
+    function updateHeroText(slideEl) {
+      const title    = slideEl.dataset.title;
+      const subtitle = slideEl.dataset.subtitle;
+      if (!title && !subtitle) return;
+
+      // Fade out
+      heroTitle.style.opacity = 0;
+      heroSubtitle.style.opacity = 0;
+
+      setTimeout(() => {
+        if (title) heroTitle.innerHTML = title;
+        if (subtitle) heroSubtitle.innerHTML = subtitle;
+        // Fade back in
+        heroTitle.style.opacity = 1;
+        heroSubtitle.style.opacity = 1;
+      }, 500);
+    }
 
     function showSlide(index) {
       slides[current].classList.remove('active');
@@ -440,6 +459,7 @@
 
       slides[current].classList.add('active');
       dots[current].classList.add('active');
+      updateHeroText(slides[current]);
 
       // Reset progress bar
       progress.classList.remove('running');
