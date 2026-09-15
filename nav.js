@@ -152,12 +152,11 @@ function renderFooter() {
           <p class="text-white/50 font-inter text-sm leading-relaxed mb-6">
             Your trusted partner for seamless flight bookings, visa assistance, and unforgettable travel experiences worldwide.
           </p>
-          <div class="flex space-x-3">
-            <a href="#" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">f</a>
-            <a href="#" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">in</a>
-            <a href="#" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">ig</a>
-            <a href="#" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">tw</a>
-          </div>
+       <div class="flex space-x-3">
+  <a href="https://facebook.com/PEC" target="_blank" rel="noopener noreferrer" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">f</a>
+  <a href="https://instagram.com/phebeademola" target="_blank" rel="noopener noreferrer" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">ig</a>
+  <a href="https://youtube.com/@PEC8131" target="_blank" rel="noopener noreferrer" class="w-9 h-9 bg-white/10 hover:bg-gold/20 border border-white/10 hover:border-gold/30 rounded-full flex items-center justify-center text-white hover:text-gold transition-all text-sm">yt</a>
+</div>
         </div>
 
         <!-- Services -->
@@ -190,7 +189,7 @@ function renderFooter() {
           <h4 class="text-white font-semibold font-poppins mb-5 text-sm uppercase tracking-wider">Contact Us</h4>
           <div class="space-y-4">
             <div class="flex items-start gap-3">
-              <span class="text-white/50 font-inter text-sm">25, Alagbado Akute Road, Baba Dada, Busstop, Ojodu Berger, Lagos</span>
+              <span class="text-white/50 font-inter text-sm">18, Pipeline Road, Alagbole, Ogun State, Nigeria</span>
             </div>
             <div class="flex items-center gap-3">
               <a href="tel:+2349016520888" class="text-white/50 hover:text-gold font-inter text-sm transition-all">+234 901 652 0888</a>
